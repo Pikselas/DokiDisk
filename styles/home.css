@@ -308,11 +308,11 @@ body
 
 .progress .progress_bar
 {
-    width: 0px;
+    width: 0%;
     height: 10px;
     background-color: #421eef;
     border-radius: 5px;
-    animation: progress 5s infinite linear;
+    /* animation: progress 5s infinite linear; */
 }
 
 @keyframes progress
@@ -325,4 +325,14 @@ body
     {
         width: 200px;
     }
+}
+
+.file_upload_status h3
+{
+    left: 10px;
+    color: antiquewhite;
+    width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
