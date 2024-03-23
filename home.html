@@ -9,31 +9,34 @@
 </head>
 <body>
     <div class="file_window">
+
+        <div class="file_uploads" id="file_uploads"></div>
+
         <input type="text" id="file_explore_path" placeholder="Path.."/>
-        <img id="upload_file_button" src="./media/upload.png"/>
-        <div class="file_panel">
-            <div class="file_panel_container"> 
-                <div class="content">
-                    <div class="style_section">
-                        <div></div>
-                        <div></div>
-                    </div>
-                    <div class="details">
-                        <img class="thumbnail" src="///D:/CoderWallp/sad life/yokawaii.jpg" alt="file_icon">
-                        <h2>yokawaii</h2>
-                        <h3>jpg</h3>
-                    </div>
-                </div>
-            </div>
+        <input type="file" id="file_upload_input" hidden/>
+        <label for="file_upload_input">
+            <img id="upload_file_button" src="./media/upload.png"/>
+        </label>
+        <div class="file_panel" id="f_p">
+           
         </div>
     </div>
 
-    <div class="action_frame">
+    <!-- <div class="action_frame">
         <div class="style_section">
             <div></div>
             <div></div>
         </div>
-    </div>
+    </div> -->
+
+
+    <script>
+        document.getElementById("f_p").appendChild(CreateFileDetailsPanel("///D:/CoderWallp/sad life/yokawaii.jpg" , "yokawaii" , "jpg")); 
+        document.getElementById("file_upload_input").onchange = (ev)=>
+        {
+            document.getElementById("file_uploads").appendChild(InvokeFileUpload(ev.target.files[0]));
+        };
+    </script>
 
 </body>
 </html>

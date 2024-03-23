@@ -46,11 +46,47 @@ function InvokeFileUpload(file_data)
             let progress = (event.loaded / event.total) * 100;
             progress_bar_fill.style.width = progress + "%";
         }
-    }
+    };
 
-    let frm_data = new FormData();
-    frm_data.append("file", file_data);
-    xhr.send(frm_data);
+    xhr.send(file_data);
 
     return file_status_panel;
+}
+
+function CreateFileDetailsPanel(thumbnail_img , name , size)
+{
+    let file_panel_container = document.createElement("div");
+    file_panel_container.className = "file_panel_container";
+
+    let content = document.createElement("div");
+    content.className = "content";
+
+    let style_section = document.createElement("div");
+    style_section.className = "style_section";
+    
+    style_section.appendChild(document.createElement("div"));
+    style_section.appendChild(document.createElement("div"));
+
+    let details = document.createElement("div");
+    details.className = "details";
+
+    let thumbnail = document.createElement("img");
+    thumbnail.src = thumbnail_img;
+    thumbnail.className = "thumbnail";
+
+    let file_name = document.createElement("h2");
+    file_name.innerText = name;
+
+    let file_size = document.createElement("h3");
+    file_size.innerText = size;
+
+    details.appendChild(thumbnail);
+    details.appendChild(file_name);
+    details.appendChild(file_size);
+    
+    content.appendChild(style_section);
+    content.appendChild(details);
+    file_panel_container.appendChild(content);
+
+    return file_panel_container;
 }

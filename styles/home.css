@@ -8,7 +8,7 @@ body
     width: max-content;
     height: max-content;
     position: absolute;
-    top: 25vh;
+    /* top: 25vh; */
 }
 
 #file_explore_path
@@ -84,6 +84,8 @@ body
 .file_panel .file_panel_container
 {
     direction: ltr;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
 }
 
 .file_panel .content
@@ -99,6 +101,8 @@ body
     height: 100px;
     position: absolute;
     overflow: hidden;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .file_panel .content .style_section div:nth-child(1)
@@ -188,9 +192,10 @@ body
     width: 300px;
     height: 50px;
     background-color: #081a37;
-    position: absolute;
+    position: relative;
     top: 0px;
     left: 0px;
+    direction: ltr;
 }
 
 .file_upload_status .style_section
@@ -199,6 +204,8 @@ body
     height: 100%;
     position: absolute;
     overflow: hidden;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .file_upload_status .style_section div
@@ -312,19 +319,6 @@ body
     height: 10px;
     background-color: #421eef;
     border-radius: 5px;
-    /* animation: progress 5s infinite linear; */
-}
-
-@keyframes progress
-{
-    0%
-    {
-        width: 0px;
-    }
-    100%
-    {
-        width: 200px;
-    }
 }
 
 .file_upload_status h3
@@ -335,4 +329,20 @@ body
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.file_uploads
+{
+    width: 300px;
+    height: 150px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 10px;
+
+    /* border: 2px solid #34ffbb; */
+    border-left: none;
+    border-radius: 30px;
+
+    direction: rtl;
+    scrollbar-width: thin;
 }
