@@ -1,4 +1,4 @@
-function InvokeFileUpload(file_data)
+function InvokeFileUpload(file_data , file_path)
 {
     let file_status_panel = document.createElement("div");
     file_status_panel.className = "file_upload_status";
@@ -48,6 +48,7 @@ function InvokeFileUpload(file_data)
         }
     };
 
+    xhr.setRequestHeader("-file-name", (file_path.length > 0 ? file_path + "/" : "") + file_data.name);
     xhr.send(file_data);
 
     return file_status_panel;

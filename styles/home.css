@@ -3,12 +3,25 @@ body
     background-color: #020f1b;
 }
 
+body svg
+{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: calc(100% - 500px);
+    height: 100%;
+}
+
 .file_window
 {
     width: max-content;
-    height: max-content;
+    height: 100%;
     position: absolute;
-    /* top: 25vh; */
+    top: 0px;
+    left: 0px;
+    padding-right: 10px;
+    background-color: #0301159c;
+    box-shadow: 0px 0px 50px black;
 }
 
 #file_explore_path
@@ -74,7 +87,7 @@ body
     padding-left: 0px;
     border-radius: 50px;
     direction: rtl;
-    border: 2px solid #34ffbb;
+    /* border: 2px solid #34ffbb; */
     border-left: none;
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
@@ -112,8 +125,8 @@ body
     position: absolute;
     border-radius: 50%;
     background-color: #34ffbb;
-    left: 125px;
-    top: 30px;
+    left: 140px;
+    top: 35px;
 }
 
 .file_panel .content .style_section div:nth-child(2)

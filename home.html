@@ -18,7 +18,7 @@
             <img id="upload_file_button" src="./media/upload.png"/>
         </label>
         <div class="file_panel" id="f_p">
-           
+            
         </div>
     </div>
 
@@ -31,10 +31,21 @@
 
 
     <script>
-        document.getElementById("f_p").appendChild(CreateFileDetailsPanel("///D:/CoderWallp/sad life/yokawaii.jpg" , "yokawaii" , "jpg")); 
         document.getElementById("file_upload_input").onchange = (ev)=>
         {
-            document.getElementById("file_uploads").appendChild(InvokeFileUpload(ev.target.files[0]));
+            document.getElementById("file_uploads").appendChild(InvokeFileUpload(ev.target.files[0] , document.getElementById("file_explore_path").value));
+        };
+        document.getElementById("file_explore_path").onchange = async (ev)=>
+        {
+            let f_p = document.getElementById("f_p");
+            f_p.innerHTML = "";
+            let path = ev.target.value;
+            let files = await fetch("/file_list/" + path);
+            files = await files.json();
+            files.forEach((file)=>
+            {
+                f_p.appendChild(CreateFileDetailsPanel("/get_thumbnail/" + (path.length > 0 ? path + "/" : "") + file.Name , file.Name , "0"));
+            });
         };
     </script>
 
