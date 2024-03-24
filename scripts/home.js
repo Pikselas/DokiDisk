@@ -48,6 +48,14 @@ function InvokeFileUpload(file_data , file_path)
         }
     };
 
+    xhr.onload = () =>
+    {
+        if(xhr.status == 200)
+        {
+            progress_bar_fill.style.backgroundColor = "#b3f73a";
+        }
+    }
+
     xhr.setRequestHeader("-file-name", (file_path.length > 0 ? file_path + "/" : "") + file_data.name);
     xhr.send(file_data);
 

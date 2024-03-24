@@ -359,3 +359,23 @@ body svg
     direction: rtl;
     scrollbar-width: thin;
 }
+
+.video_holder
+{
+    height: 100%;
+    width: calc(100% - 450px);
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#video_player
+{
+    width: 75%;
+    height: 75%;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px black;
+}

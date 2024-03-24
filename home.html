@@ -22,13 +22,9 @@
         </div>
     </div>
 
-    <!-- <div class="action_frame">
-        <div class="style_section">
-            <div></div>
-            <div></div>
-        </div>
-    </div> -->
-
+    <div class="video_holder">
+        <video id="video_player" controls />
+    </div>
 
     <script>
         document.getElementById("file_upload_input").onchange = (ev)=>
@@ -41,10 +37,18 @@
             f_p.innerHTML = "";
             let path = ev.target.value;
             let files = await fetch("/file_list/" + path);
+            let video_p = document.getElementById("video_player");
             files = await files.json();
             files.forEach((file)=>
             {
-                f_p.appendChild(CreateFileDetailsPanel("/get_thumbnail/" + (path.length > 0 ? path + "/" : "") + file.Name , file.Name , "0"));
+                let file_path = path.length > 0 ? path + "/" + file.Name : file.Name;
+                let file_details_panel = CreateFileDetailsPanel("/get_thumbnail/" + file_path , file.Name , "0");
+                file_details_panel.onclick = async ()=>
+                {
+                    video_p.src = "/get_file/" + file_path;
+                    video_p.poster = "/get_thumbnail/" + file_path;
+                };
+                f_p.appendChild(file_details_panel);
             });
         };
     </script>
