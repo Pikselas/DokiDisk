@@ -94,7 +94,7 @@ func Upload_file(w http.ResponseWriter, r *http.Request, user_email string, user
 	go UploadFileToRemote(file_name, user, branched_reader, pipe_writer)
 
 	file_name_und := strings.ReplaceAll(file_name, "/", "_")
-	ffmpeg_cmd := exec.Command("./ffmpeg", "-i", "-",
+	ffmpeg_cmd := exec.Command("ffmpeg", "-i", "-",
 		"-ss", "00:00:01",
 		"-vframes", "1",
 		"-y", file_name_und+".jpg")
