@@ -52,7 +52,11 @@ function InvokeFileUpload(file_data , file_path)
     {
         if(xhr.status == 200)
         {
-            progress_bar_fill.style.backgroundColor = "#b3f73a";
+            progress_bar_fill.style.backgroundColor = "#63ffc5";
+        }
+        else
+        {
+            progress_bar_fill.style.backgroundColor = "#ff6363";
         }
     }
 
@@ -83,15 +87,21 @@ function CreateFileDetailsPanel(thumbnail_img , name , size)
     thumbnail.src = thumbnail_img;
     thumbnail.className = "thumbnail";
 
-    let file_name = document.createElement("h2");
+    let file_name = document.createElement("span");
+    let file_name_h = document.createElement("h2");
     file_name.innerText = name;
 
-    let file_size = document.createElement("h3");
+    file_name_h.appendChild(file_name);
+
+    let file_size = document.createElement("span");
+    let file_size_h = document.createElement("h3");
     file_size.innerText = size;
 
+    file_size_h.appendChild(file_size);
+
     details.appendChild(thumbnail);
-    details.appendChild(file_name);
-    details.appendChild(file_size);
+    details.appendChild(file_name_h);
+    details.appendChild(file_size_h);
     
     content.appendChild(style_section);
     content.appendChild(details);

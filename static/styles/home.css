@@ -20,8 +20,8 @@ body svg
     top: 0px;
     left: 0px;
     padding-right: 10px;
-    background-color: #0301159c;
-    box-shadow: 0px 0px 50px black;
+    /* background-color: #0301159c; */
+    /* box-shadow: 0px 0px 50px black; */
 }
 
 #file_explore_path
@@ -32,7 +32,7 @@ body svg
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
     border: 2px solid #34ffbb;
-    border-bottom:none;
+    /* border-bottom:none; */
     border-left: none;
     background-color: transparent;
     outline: none;
@@ -79,6 +79,7 @@ body svg
 
 .file_panel
 {
+    position: relative;
     width: 450px;
     height: 450px;
     overflow-y: scroll;
@@ -87,7 +88,7 @@ body svg
     padding-left: 0px;
     border-radius: 50px;
     direction: rtl;
-    /* border: 2px solid #34ffbb; */
+    border: 2px solid #34ffbb;
     border-left: none;
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
@@ -124,7 +125,7 @@ body svg
     height: 200px;
     position: absolute;
     border-radius: 50%;
-    background-color: #34ffbb;
+    background-color: #0ae39a;
     left: 140px;
     top: 35px;
 }
@@ -135,7 +136,7 @@ body svg
     height: 150px;
     position: absolute;
     border-radius: 50%;
-    background-color: #34ffbb;
+    background-color: #0ae39a;
     right: -10px;
     top: 15px;
 }
@@ -169,6 +170,10 @@ body svg
     text-shadow: 0px 0px 10px black;
     margin: 0px;
     margin-top: 10px;
+    max-width: 270px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* .action_frame
@@ -352,7 +357,7 @@ body svg
     overflow-x: hidden;
     padding: 10px;
 
-    /* border: 2px solid #34ffbb; */
+    border: 2px solid #34ffbb;
     border-left: none;
     border-radius: 30px;
 
@@ -378,4 +383,5 @@ body svg
     height: 75%;
     border-radius: 20px;
     box-shadow: 0px 0px 10px black;
+    border: 2px solid #34ffbb;
 }

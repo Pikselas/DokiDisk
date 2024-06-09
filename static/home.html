@@ -17,8 +17,8 @@
         <label for="file_upload_input">
             <img id="upload_file_button" src="./media/upload.png"/>
         </label>
-        <div class="file_panel" id="f_p">
-            
+        <div id="f_p" class="file_panel">
+        
         </div>
     </div>
 
@@ -27,30 +27,44 @@
     </div>
 
     <script>
-        document.getElementById("file_upload_input").onchange = (ev)=>
-        {
-            document.getElementById("file_uploads").appendChild(InvokeFileUpload(ev.target.files[0] , document.getElementById("file_explore_path").value));
-        };
-        document.getElementById("file_explore_path").onchange = async (ev)=>
+        async function FetchFileDetails(file_path)
         {
             let f_p = document.getElementById("f_p");
             f_p.innerHTML = "";
-            let path = ev.target.value;
+            let path = file_path;
             let files = await fetch("/file_list/" + path);
             let video_p = document.getElementById("video_player");
             files = await files.json();
             files.forEach((file)=>
             {
                 let file_path = path.length > 0 ? path + "/" + file.Name : file.Name;
-                let file_details_panel = CreateFileDetailsPanel("/get_thumbnail/" + file_path , file.Name , "0");
-                file_details_panel.onclick = async ()=>
+                let file_thumbnail_src = file.IsDir ? "./media/folder.png" : "/get_thumbnail/" + file_path;
+                let file_details_panel = CreateFileDetailsPanel(file_thumbnail_src, file.Name , "0");
+                file_details_panel.onclick = ()=>
                 {
-                    video_p.src = "/get_file/" + file_path;
-                    video_p.poster = "/get_thumbnail/" + file_path;
+                    if(file.IsDir)
+                    {
+                        document.getElementById("file_explore_path").value = file_path;
+                        FetchFileDetails(file_path);
+                    }
+                    else
+                    {
+                        video_p.src = "/get_file/" + file_path;
+                        video_p.poster = file_thumbnail_src;
+                    }
                 };
                 f_p.appendChild(file_details_panel);
             });
+        }
+        document.getElementById("file_upload_input").onchange = (ev)=>
+        {
+            document.getElementById("file_uploads").appendChild(InvokeFileUpload(ev.target.files[0] , document.getElementById("file_explore_path").value));
         };
+        document.getElementById("file_explore_path").onchange = (ev)=>
+        {
+            FetchFileDetails(ev.target.value);
+        };
+        FetchFileDetails("");
     </script>
 
 </body>
