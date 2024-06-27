@@ -32,9 +32,14 @@ func CheckLoginThen(f func(http.ResponseWriter, *http.Request, string, string)) 
 func main() {
 
 	http.HandleFunc("/upload_file", CheckLoginThen(Upload_file))
-	http.HandleFunc("/get_file/{file_path...}", CheckLoginThen(Get_file))
+	http.HandleFunc("/get_file/{file_path...}", CheckLoginThen(Get_file_from_path))
 	http.HandleFunc("/file_list/{file_path...}", CheckLoginThen(List_files))
 	http.HandleFunc("/get_thumbnail/{file_path...}", CheckLoginThen(Get_file_thumbnail))
+
+	// get shared link
+	http.HandleFunc("/get_link/{file_path}", CheckLoginThen(Get_shared_link))
+	// get shared file
+	http.HandleFunc("/get/{file_key}", Get_shared_file)
 
 	// http.HandleFunc("/static/", func(w http.ResponseWriter, r *http.Request) {
 	// 	http.ServeFile(w, r, r.PathValue("file"))

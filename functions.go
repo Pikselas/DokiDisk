@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -94,7 +96,7 @@ func Upload_file(w http.ResponseWriter, r *http.Request, user_email string, user
 	go UploadFileToRemote(file_name, user, branched_reader, pipe_writer)
 
 	file_name_und := strings.ReplaceAll(file_name, "/", "_")
-	ffmpeg_cmd := exec.Command("ffmpeg", "-i", "-",
+	ffmpeg_cmd := exec.Command("./ffmpeg", "-i", "-",
 		"-ss", "00:00:01",
 		"-vframes", "1",
 		"-y", file_name_und+".jpg")
@@ -154,7 +156,7 @@ func List_files(w http.ResponseWriter, r *http.Request, user_email string, user_
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(files)
 }
-func Get_file(w http.ResponseWriter, r *http.Request, user_email string, user_token string) {
+func Get_file(w http.ResponseWriter, r *http.Request, user_email string, user_token string, file_path string) {
 	user, Err := ToOcto.NewOctoUser(user_email, user_token)
 	if Err != nil {
 		http.Error(w, Err.Error(), http.StatusInternalServerError)
@@ -165,13 +167,16 @@ func Get_file(w http.ResponseWriter, r *http.Request, user_email string, user_to
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	file, err := drive.Load(r.PathValue("file_path"))
+	file, err := drive.Load(file_path)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	StreamFile(file, "application/octet-stream")(w, r)
+}
+func Get_file_from_path(w http.ResponseWriter, r *http.Request, user_email string, user_token string) {
+	Get_file(w, r, user_email, user_token, r.PathValue("file_path"))
 }
 func Get_file_thumbnail(w http.ResponseWriter, r *http.Request, user_email string, user_token string) {
 
@@ -188,4 +193,61 @@ func Get_file_thumbnail(w http.ResponseWriter, r *http.Request, user_email strin
 	defer reader.Close()
 	w.Header().Set("Content-Type", "image/jpeg")
 	io.Copy(w, reader)
+}
+
+// -----------
+
+type SharedFile struct {
+	Path  string
+	Email string
+	Token string
+}
+
+var enc_dec, err = Octo.NewAesEncDec()
+
+func Get_shared_link(w http.ResponseWriter, r *http.Request, user_email string, user_token string) {
+	shared_file := SharedFile{Path: r.PathValue("file_path"), Email: user_email, Token: user_token}
+	shared_file_json, err := json.Marshal(shared_file)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	//enc_data
+	enc_data, err := enc_dec.Encrypt(bytes.NewReader(shared_file_json))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	// convert to base64
+	base64_data := base64.NewEncoder(base64.URLEncoding, w)
+	io.Copy(base64_data, enc_data)
+	base64_data.Close()
+}
+
+func Get_shared_file(w http.ResponseWriter, r *http.Request) {
+	file_key := r.PathValue("file_key")
+	//dec_data
+	dec_data := make([]byte, base64.URLEncoding.DecodedLen(len(file_key)))
+	_, err := base64.URLEncoding.Decode(dec_data, []byte(file_key))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	dec_reader, err := enc_dec.Decrypt(bytes.NewReader(dec_data))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	shared_file := SharedFile{}
+	err = json.NewDecoder(dec_reader).Decode(&shared_file)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	fmt.Println(shared_file)
+
+	// get file
+	Get_file(w, r, shared_file.Email, shared_file.Token, shared_file.Path)
 }
